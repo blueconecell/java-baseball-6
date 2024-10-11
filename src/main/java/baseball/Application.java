@@ -14,22 +14,23 @@ public class Application {
         intro();
         String gameContinue = "1";
 
-        while (gameContinue == "1") {
-            // 야구 숫자 랜덤 세팅
-            List<Integer> computer = getComputerNumber();
-            System.out.println("computer = " + computer);
+            while (gameContinue == "1") {
+                // 야구 숫자 랜덤 세팅
+                List<Integer> computer = getComputerNumber();
+                System.out.println("computer = " + computer);
 
 
-            // 입력 무한히 받아보기
-            boolean gameResult = false;
-            while (!gameResult) {
-                gameResult = playMainGame(computer);
+                // 입력 무한히 받아보기
+                boolean gameResult = false;
+                while (!gameResult) {
+                    gameResult = playMainGame(computer);
+                }
+
+                // 게임 종료 & 재시작 여부
+                System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+                gameContinue = Console.readLine();
             }
 
-            // 게임 종료 & 재시작 여부
-            System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-            gameContinue = Console.readLine();
-        }
 
 
 
@@ -47,36 +48,48 @@ public class Application {
     private static boolean playMainGame(List<Integer> computer) {
         System.out.print("숫자를 입력해주세요 : ");
         String inn = Console.readLine();
-
-        String[] strArr = inn.split("");
-        int[] inputNum = new int[3];
-        for (int i = 0; i < 3; i++) {
-            inputNum[i] = Integer.parseInt(strArr[i]);
-        }
-        int strike = 0;
-        int ball = 0;
-        for (int i = 0; i < 3; i++) {
-            if (computer.get(i) == inputNum[i]) {
-                strike++;
-            } else if (computer.contains(inputNum[i])) {
-                ball++;
+        try {
+            if (inn.length() != 3) {
+                throw new IllegalArgumentException();
             }
-        }
 
-        if (ball > 0) {
-            System.out.print(ball+"볼 ");
-            if (strike > 0) {
-                System.out.println(strike + "스트라이크");
+            String[] strArr = inn.split("");
+            int[] inputNum = new int[3];
+            for (int i = 0; i < 3; i++) {
+                inputNum[i] = Integer.parseInt(strArr[i]);
             }
-        } else if (strike > 0) {
-            System.out.println(strike + "스트라이크");
-        } else {
-            System.out.println("낫싱");
+            int strike = 0;
+            int ball = 0;
+            for (int i = 0; i < 3; i++) {
+                if (computer.get(i) == inputNum[i]) {
+                    strike++;
+                } else if (computer.contains(inputNum[i])) {
+                    ball++;
+                }
+            }
+
+            if (ball > 0) {
+                System.out.print(ball + "볼 ");
+                if (strike > 0) {
+                    System.out.print(strike + "스트라이크");
+                }
+            } else if (strike > 0) {
+                System.out.print(strike + "스트라이크");
+            } else {
+                System.out.print("낫싱");
+            }
+
+            if (strike == 3) {
+                System.out.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+                return true;
+            }
+            System.out.println();
+        } catch (IllegalArgumentException e) {
+            System.out.println("잘못된 입력발생");
+            System.exit(0);
         }
-        if (strike == 3) {
-            System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-            return true;
-        }return false;
+        return false;
+
     }
 
     private static void displayArray(int[] checker,String name) {
@@ -90,4 +103,5 @@ public class Application {
             System.out.println(name + "["+i+"] : "+checker[i]);
         }
     }
+
 }
