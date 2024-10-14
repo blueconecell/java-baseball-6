@@ -14,7 +14,7 @@ public class Application {
         intro();
         String gameContinue = "1";
 
-            while (gameContinue == "1") {
+            while (gameContinue.equals("1")) {
                 // 야구 숫자 랜덤 세팅
                 List<Integer> computer = getComputerNumber();
                 System.out.println("computer = " + computer);
